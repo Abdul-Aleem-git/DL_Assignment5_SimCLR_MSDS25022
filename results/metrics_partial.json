@@ -1,0 +1,10 @@
+{
+  "student_name": "Muhammad Abdul Aleem",
+  "roll_number": "MSDS25022",
+  "seed": 2026,
+  "batch_size": 64,
+  "supervised_epochs": 30,
+  "learning_rate": 0.0003,
+  "optimizer": "Adam",
+  "supervised_10percent_test_acc": 0.7041
+}
