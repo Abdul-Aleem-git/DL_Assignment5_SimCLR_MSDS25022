@@ -30,6 +30,7 @@ DATA_ROOT   = "./data"
 RESULTS_DIR = "./results"
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
+# 16 images gives a clean 32x32 heatmap that is easy to read
 BATCH_N  = 16   # N images → 2N views in the similarity matrix
 DEVICE   = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
