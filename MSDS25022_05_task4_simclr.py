@@ -156,6 +156,7 @@ class NTXentLoss(nn.Module):
     """
     def __init__(self, temperature: float = 0.5):
         super().__init__()
+        # lower tau = sharper distribution, higher tau = softer
         self.tau = temperature
 
     def forward(self, z: torch.Tensor) -> torch.Tensor:
