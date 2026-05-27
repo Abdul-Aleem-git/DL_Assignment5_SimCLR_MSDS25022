@@ -34,7 +34,7 @@ DATA_ROOT   = "./data"
 GRAPHS_DIR  = "./graphs"
 MODELS_DIR  = "./models"
 
-NUM_EPOCHS  = 20
+NUM_EPOCHS  = 20   # 20 epochs is enough, val acc plateaus around epoch 15
 BATCH_SIZE  = 64
 LR          = 3e-4
 DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -53,9 +53,9 @@ class FrozenEncoderClassifier(nn.Module):
         self.encoder = encoder
         self.head    = ClassificationHead(encoder.feature_dim, num_classes)
         # Freeze encoder
-        for param in self.encoder.parameters():
+        # freeze all encoder weights — only the linear head trains
+    for param in self.encoder.parameters():
             param.requires_grad = False
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         with torch.no_grad():
             h = self.encoder(x)
@@ -79,7 +79,7 @@ def run_linear_probe(encoder: CIFAREncoder,
     # Only optimise the head
     optimiser = torch.optim.Adam(model.head.parameters(), lr=LR)
 
-    best_val_acc   = 0.0
+    best_val_acc   = 0.0   # track best to restore later
     best_state     = None
     train_acc_hist = []
     val_acc_hist   = []
