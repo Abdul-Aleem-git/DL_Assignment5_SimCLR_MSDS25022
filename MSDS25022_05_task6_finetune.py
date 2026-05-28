@@ -32,7 +32,7 @@ GRAPHS_DIR  = "./graphs"
 RESULTS_DIR = "./results"
 MODELS_DIR  = "./models"
 
-NUM_EPOCHS  = 20
+NUM_EPOCHS  = 20   # same as linear probe for fair comparison
 BATCH_SIZE  = 64
 LR          = 3e-4
 DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -65,11 +65,11 @@ def train_and_eval(model: nn.Module, tag: str) -> tuple[float, list, list]:
 
     criterion = nn.CrossEntropyLoss()
     optimiser = torch.optim.Adam(model.parameters(), lr=LR)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimiser, T_max=NUM_EPOCHS
+    # cosine decay works better than fixed lr for fine-tuning
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(        optimiser, T_max=NUM_EPOCHS
     )
 
-    best_val_acc   = 0.0
+    best_val_acc   = 0.0   # will update whenever val improves
     best_state     = None
     train_acc_hist = []
     val_acc_hist   = []
@@ -201,7 +201,7 @@ def main() -> None:
     }
     save_metrics(metrics, os.path.join(RESULTS_DIR, "metrics.json"))
 
-    print(f"\nFine-tune test accuracy: {acc_ft*100:.2f}%")
+    print(f"\n── Fine-tune test accuracy: {acc_ft*100:.2f}%")
     print("\nTask 7 complete.")
 
     return acc_ft, val_hist_ft
