@@ -66,8 +66,7 @@ def train_and_eval(model: nn.Module, tag: str) -> tuple[float, list, list]:
     criterion = nn.CrossEntropyLoss()
     optimiser = torch.optim.Adam(model.parameters(), lr=LR)
     # cosine decay works better than fixed lr for fine-tuning
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(        optimiser, T_max=NUM_EPOCHS
-    )
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimiser, T_max=NUM_EPOCHS)
 
     best_val_acc   = 0.0   # will update whenever val improves
     best_state     = None
@@ -200,6 +199,12 @@ def main() -> None:
         "different_image_similarity_after" : lp_data.get("different_image_similarity_after",  0.0),
     }
     save_metrics(metrics, os.path.join(RESULTS_DIR, "metrics.json"))
+
+    # plot the val accuracy curve for fine-tuning
+    plot_finetuning_comparison(
+        {"SimCLR + Fine-tune": val_hist_ft},
+        os.path.join(GRAPHS_DIR, "finetuning_accuracy.png")
+    )
 
     print(f"\n── Fine-tune test accuracy: {acc_ft*100:.2f}%")
     print("\nTask 7 complete.")
