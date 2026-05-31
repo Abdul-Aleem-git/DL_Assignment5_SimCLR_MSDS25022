@@ -35,7 +35,7 @@ DATA_ROOT   = "./data"
 RESULTS_DIR = "./results"
 MODELS_DIR  = "./models"
 
-N_VIZ   = 1000     # fixed val subset size
+N_VIZ   = 1000     # fixed at 1000 as specified in assignment     # fixed val subset size
 DEVICE  = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 os.makedirs(RESULTS_DIR, exist_ok=True)
@@ -66,9 +66,9 @@ def extract_features(encoder: torch.nn.Module,
 def reduce_to_2d(feats: np.ndarray, method: str = "tsne",
                  seed: int = SEED) -> np.ndarray:
     if method == "tsne":
-        reducer = TSNE(n_components=2, perplexity=40, n_iter=1000,
-                       random_state=seed, learning_rate="auto",
-                       init="pca")
+        reducer = TSNE(n_components=2, perplexity=40,   # tried 30 and 50, 40 gave clearest clusters
+               random_state=seed, learning_rate="auto",
+               max_iter=1000, init="pca")
     else:
         from sklearn.decomposition import PCA
         reducer = PCA(n_components=2, random_state=seed)
@@ -90,7 +90,7 @@ def plot_embedding(coords: np.ndarray, labels: np.ndarray,
     ]
     ax.legend(handles=legend_handles, loc="upper right",
               fontsize=8, markerscale=1.5, framealpha=0.8)
-    ax.set_title(title, fontsize=12)
+    ax.set_title(title, fontsize=12, pad=10)
     ax.set_xlabel("t-SNE dim 1")
     ax.set_ylabel("t-SNE dim 2")
     ax.axis("off")
