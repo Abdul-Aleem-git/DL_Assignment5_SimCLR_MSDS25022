@@ -34,7 +34,7 @@ DATA_ROOT   = "./data"
 GRAPHS_DIR  = "./graphs"
 MODELS_DIR  = "./models"
 
-NUM_EPOCHS  = 20   # 20 epochs is enough, val acc plateaus around epoch 15
+NUM_EPOCHS  = 20   # same as linear probe for fair comparison   # 20 epochs is enough, val acc plateaus around epoch 15
 BATCH_SIZE  = 64
 LR          = 3e-4
 DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -79,7 +79,7 @@ def run_linear_probe(encoder: CIFAREncoder,
     # Only optimise the head
     optimiser = torch.optim.Adam(model.head.parameters(), lr=LR)
 
-    best_val_acc   = 0.0   # track best to restore later
+    best_val_acc   = 0.0   # will update whenever val improves   # track best to restore later
     best_state     = None
     train_acc_hist = []
     val_acc_hist   = []
