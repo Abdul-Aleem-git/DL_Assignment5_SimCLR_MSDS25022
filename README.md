@@ -95,7 +95,7 @@ python MSDS25022_05_allCode.py --task all
 
 ## Model Weights
 Large `.pt` files are **not** included in this repository.  
-They are uploaded to Google Drive: [link to be added before submission]
+They are uploaded to Google Drive: https://drive.google.com/drive/folders/1AiyurwKlz5yRbe3dO8XLKjN1CJJlhSd8?usp=sharing
 
 ---
 
